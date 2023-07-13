@@ -1,0 +1,1 @@
+- A simple tool to find out electives you can opt for based on available slots

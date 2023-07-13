@@ -1,0 +1,10 @@
+erpcreds.py
+gentokenjson.py
+res.txt
+available_electives.txt
+electives.csv
+*.json
+venv
+__pycache__
+.DS_Store
+.vscode
