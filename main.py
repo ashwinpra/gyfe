@@ -92,9 +92,6 @@ def save_electives():
     }
 
     df = pd.DataFrame(data)
-
-    # for 
-
     df.to_csv('electives.csv', index=False)
 
 def main():
@@ -104,10 +101,11 @@ def main():
         save_electives()
 
     df = pd.read_csv('electives.csv')   
-    # filter the dataframe to only include the slots the user wants to register for
+
+    # filter courses
     df = df[df['Slot'].isin(args.slots)].reset_index(drop=True)
     
-    # save the available electives to a text file
+    # save available electives
     with open('available_electives.txt', 'w') as f:
         f.write(tabulate(df, headers='keys', tablefmt='fancy_grid'))
 
