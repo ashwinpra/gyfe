@@ -10,10 +10,11 @@ from tabulate import tabulate
 def parse_args():
     parser = argparse.ArgumentParser(description='Get electives from ERP')
     parser.add_argument('-o', '--overwrite', action='store_true', help='Overwrite existing electives.csv file')
+    parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
     parser.add_argument('--slots', nargs='+', help='Slots to register for')
     return parser.parse_args()
 
-def save_electives():
+def save_electives(args):
     headers = {
     'timeout': '20',
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/51.0.2704.79 Chrome/51.0.2704.79 Safari/537.36'
@@ -21,7 +22,10 @@ def save_electives():
 
     session = requests.Session()
 
-    sessionToken, ssoToken = erp.login(headers, erpcreds, 2, session)
+    if args.notp:
+        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True)
+    else:
+        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_WAIT_INTERVAL=2, LOGGING=True)
 
     ERP_ELECTIVES_URL = "https://erp.iitkgp.ac.in/Acad/central_breadth_tt.jsp"
 
@@ -98,7 +102,7 @@ def main():
     args = parse_args()
 
     if args.overwrite or not os.path.exists('electives.csv') :
-        save_electives()
+        save_electives(args)
 
     df = pd.read_csv('electives.csv')   
 
