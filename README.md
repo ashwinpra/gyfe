@@ -1,6 +1,6 @@
 A simple script to find the electives available for you, given your elective slots
 
----
+---****
 
 ## Usage 
 - This script uses the [iit-kgp-erp-login](https://pypi.org/project/iitkgp-erp-login/) library created by [proffapt](https://github.com/proffapt), and as such, there is some pre-requisite setup to be done 
@@ -31,3 +31,4 @@ python3 main.py --slots F4 G3
 #
 ### Future plans
 - Make it a web app for ease of use
+****

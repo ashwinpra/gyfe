@@ -1,6 +1,6 @@
 beautifulsoup4==4.12.2
 google_auth_oauthlib==1.0.0
-iitkgp_erp_login==1.0.1
+iitkgp_erp_login==2.0.0
 pandas==2.0.2
 Requests==2.31.0
 tabulate
