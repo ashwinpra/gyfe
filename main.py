@@ -25,7 +25,7 @@ def save_electives(args):
     if args.notp:
         sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True)
     else:
-        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_WAIT_INTERVAL=2, LOGGING=True)
+        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True)
 
     ERP_ELECTIVES_URL = "https://erp.iitkgp.ac.in/Acad/central_breadth_tt.jsp"
 
