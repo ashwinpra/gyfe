@@ -57,7 +57,7 @@ def save_electives(args):
             credits.append(cells[2].text.strip())
 
             prereq_str = ''
-            for i in range(4, 6):
+            for i in range(3, 6):
                 if cells[i].text.strip() != '':
                     prereq_str += cells[i].text.strip() + ', '
             
@@ -107,7 +107,7 @@ def main():
     df = pd.read_csv('electives.csv')   
 
     # filter courses
-    df = df[df['Slot'].isin(args.slots)].reset_index(drop=True)
+    df = df[df['Slot'].isin(args.slots)].reset_index(drop=True).set_index('Course Code')
     
     # save available electives
     with open('available_electives.txt', 'w') as f:
