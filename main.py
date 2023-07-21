@@ -76,7 +76,7 @@ def save_electives(args):
                 slots.append('Not alloted yet')
             else:
                 slots.append(cells[7].text.strip()[1:-1])
-
+            
             if cells[8].text.strip() == '':
                 venues.append('Not alloted yet')
             else:
@@ -92,10 +92,13 @@ def save_electives(args):
         'Prerequisites': prereqs,
         'Venue': venues,
         'Slot': slots
-
     }
 
     df = pd.DataFrame(data)
+
+    # for some reason, some empty slots are not being replaced
+    df['Slot'].replace('', 'Not alloted yet', inplace=True)
+
     df.to_csv('electives.csv', index=False)
 
 def main():
@@ -104,14 +107,18 @@ def main():
     if args.overwrite or not os.path.exists('electives.csv') :
         save_electives(args)
 
-    df = pd.read_csv('electives.csv')   
+    df = pd.read_csv('electives.csv') 
 
-    # filter courses
-    df = df[df['Slot'].isin(args.slots)].reset_index(drop=True).set_index('Course Code')
-    
+    # filter the df
+    df_available = pd.DataFrame()
+    for slot in args.slots:    
+        df_available = pd.concat([df_available, df[df['Slot'].str.contains(slot)]], ignore_index=True)
+    df_available.set_index('Course Code', inplace=True)
+
+        
     # save available electives
     with open('available_electives.txt', 'w') as f:
-        f.write(tabulate(df, headers='keys', tablefmt='fancy_grid'))
+        f.write(tabulate(df_available, headers='keys', tablefmt='fancy_grid'))
 
     print("Available electives saved to available_electives.txt")
 
