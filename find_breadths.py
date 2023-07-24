@@ -36,25 +36,27 @@ def save_electives(args):
     # each "tr" contains a course
     rows = soup.find_all('tr')
 
-    course_codes = []
-    course_names = []
-    credits = []
-    prereqs = []
-    venues = []
-    depts = []
-    slots = []
+    courses = []
+    # course_codes = []
+    # course_names = []
+    # credits = []
+    # prereqs = []
+    # venues = []
+    # depts = []
+    # slots = []
 
     for row in rows:
         # Extract the data within the 'td' tags
         cells = row.find_all('td')
         if len(cells) >= 8:
+            course = {}
             course_code_input = cells[0].find('input', {'name': 'subno'})
             course_code = course_code_input['value']
-            course_codes.append(course_code.strip())
+            course['Course Code'] = course_code.strip()
 
-            course_names.append(cells[1].text.strip())
+            course['Name'] = cells[1].text.strip()
 
-            credits.append(cells[2].text.strip())
+            course['LTP'] = cells[2].text.strip()
 
             prereq_str = ''
             for i in range(3, 6):
@@ -63,51 +65,43 @@ def save_electives(args):
             
             # remove trailing comma and space
             if prereq_str != '':
-                prereqs.append(prereq_str[:-2])
+                course['Prerequisites'] = prereq_str[:-2]
             else:
-                prereqs.append('No prerequisites')
+                course['Prerequisites'] = 'No prerequisites'
 
             dep_input = cells[0].find('input', {'name': 'dept'})
             dep = dep_input['value']
-            depts.append(dep.strip())
+            course['Department'] = dep.strip()
 
             # slots is of the form {X}, we need just X
             if cells[7].text.strip() == '':
-                slots.append('Not alloted yet')
+                course['Slot'] = 'Not alloted yet'
             else:
-                slots.append(cells[7].text.strip()[1:-1])
+                course['Slot'] = cells[7].text.strip()[1:-1]
             
             if cells[8].text.strip() == '':
-                venues.append('Not alloted yet')
+                course['Venue'] = 'Not alloted yet'
             else:
-                venues.append(cells[8].text.strip())
+                course['Venue'] = cells[8].text.strip()
+
+            courses.append(course)
 
 
     # Create a pandas DataFrame with the scraped data
-    data = {
-        'Course Code': course_codes,
-        'Name': course_names,
-        'LTP': credits,
-        'Department': depts,
-        'Prerequisites': prereqs,
-        'Slot': slots,
-        'Venue': venues,
-    }
-
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(data=courses)
 
     # for some reason, some empty slots are not being replaced
     df['Slot'].replace('', 'Not alloted yet', inplace=True)
 
-    df.to_csv('electives.csv', index=False)
+    df.to_csv('breadth_electives.csv', index=False)
 
 def main():
     args = parse_args()
 
-    if args.overwrite or not os.path.exists('electives.csv'):
+    if args.overwrite or not os.path.exists('breadth_electives.csv'):
         save_electives(args)
 
-    df = pd.read_csv('electives.csv') 
+    df = pd.read_csv('breadth_electives.csv') 
 
     # filter the df
     df_available = pd.DataFrame()
@@ -117,10 +111,10 @@ def main():
 
         
     # save available electives
-    with open('available_electives.txt', 'w') as f:
+    with open('available_breadths.txt', 'w') as f:
         f.write(tabulate(df_available, headers='keys', tablefmt='fancy_grid'))
 
-    print("Available electives saved to available_electives.txt")
+    print("Available electives saved to available_breadths.txt")
 
 if __name__ == '__main__':
     main()
