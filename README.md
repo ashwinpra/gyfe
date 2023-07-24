@@ -38,6 +38,7 @@ python3 find_breadths.py -o --notp --slots F4 G3
 ```
 - Example `available-breadths.txt`:
 <img src="./sample_breadths.png">
+
 ---
 
 ### 2. For depth electives
@@ -65,6 +66,7 @@ python3 find_depths.py --notp --dept CS --year 3 --session 2023-2024 --semester 
 <img src="./sample_depths.png">
 
 --- 
+
 ### Future plans
 - Make it a web app for ease of use
 
