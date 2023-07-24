@@ -1,6 +1,6 @@
 erpcreds.py
 gentokenjson.py
-available_electives.txt
+available_breadths.txt
 available_depths.txt
 res.txt
 *.csv
