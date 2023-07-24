@@ -8,7 +8,7 @@ import argparse
 from tabulate import tabulate
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Get electives from ERP')
+    parser = argparse.ArgumentParser(description='Get breadth electives from ERP')
     parser.add_argument('-o', '--overwrite', action='store_true', help='Overwrite existing electives.csv file')
     parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
     parser.add_argument('--slots', nargs='+', help='Slots to register for')
@@ -86,12 +86,12 @@ def save_electives(args):
     # Create a pandas DataFrame with the scraped data
     data = {
         'Course Code': course_codes,
-        'Course Name': course_names,
-        'Credits': credits,
+        'Name': course_names,
+        'LTP': credits,
         'Department': depts,
         'Prerequisites': prereqs,
+        'Slot': slots,
         'Venue': venues,
-        'Slot': slots
     }
 
     df = pd.DataFrame(data)
@@ -104,7 +104,7 @@ def save_electives(args):
 def main():
     args = parse_args()
 
-    if args.overwrite or not os.path.exists('electives.csv') :
+    if args.overwrite or not os.path.exists('electives.csv'):
         save_electives(args)
 
     df = pd.read_csv('electives.csv') 

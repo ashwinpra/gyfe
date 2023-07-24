@@ -1,8 +1,9 @@
 erpcreds.py
 gentokenjson.py
-res.txt
 available_electives.txt
-electives.csv
+available_depths.txt
+res.txt
+*.csv
 *.json
 venv
 __pycache__
