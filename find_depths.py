@@ -34,9 +34,9 @@ def save_depths(args):
     session = requests.Session()
 
     if args.notp:
-        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True)
+        erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
     else:
-        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True)
+        erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
 
     TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={args.dept}&session={args.session}&index={args.year}&semester={args.semester}&dept={args.dept}"
     SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={args.dept}"

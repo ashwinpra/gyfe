@@ -23,9 +23,10 @@ def save_electives(args):
     session = requests.Session()
 
     if args.notp:
-        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True)
+        erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
     else:
-        sessionToken, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True)
+        erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
+    
 
     ERP_ELECTIVES_URL = "https://erp.iitkgp.ac.in/Acad/central_breadth_tt.jsp"
 
@@ -37,13 +38,6 @@ def save_electives(args):
     rows = soup.find_all('tr')
 
     courses = []
-    # course_codes = []
-    # course_names = []
-    # credits = []
-    # prereqs = []
-    # venues = []
-    # depts = []
-    # slots = []
 
     for row in rows:
         # Extract the data within the 'td' tags
