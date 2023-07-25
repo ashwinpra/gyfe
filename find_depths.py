@@ -11,8 +11,8 @@ import re
 def parse_args():
     parser = argparse.ArgumentParser(description='Get depth electives from ERP')
     parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
-    parser.add_argument('--dept', type=str, help='Department code (2 letters)')
-    parser.add_argument('--year', type=int, help='Year of study')
+    parser.add_argument('--dept', type=str, help='Department code (2 letters)', required=True)
+    parser.add_argument('--year', type=int, help='Year of study (single digit)', required=True)
     parser.add_argument('--session', type=str, default='2023-2024', help='Session (eg. 2023-2024)')
     parser.add_argument('--semester', type=str, default='AUTUMN', help='Semester (AUTUMN/SPRING)')
     return parser.parse_args()

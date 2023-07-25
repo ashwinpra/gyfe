@@ -11,7 +11,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Get breadth electives from ERP')
     parser.add_argument('-o', '--overwrite', action='store_true', help='Overwrite existing electives.csv file')
     parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
-    parser.add_argument('--slots', nargs='+', help='Slots to register for')
+    parser.add_argument('--slots', nargs='+', help='Slots to register for', required=True)
     return parser.parse_args()
 
 def save_electives(args):
