@@ -13,6 +13,10 @@ pip install -r requirements.txt
 ## Usage
 
 ### 1. For breadth electives
+- First find the slots available for your elective:
+  - Go to Academic -> Time Table -> Central TimeTable 2023-2024 AUTUMN (year and session could vary)
+  - Go to the "COMMON SUBJECTS AND BREADTH SLOTS" section corresponding to your year, locate your department, and find the slots where `B` or `HSS` is mentioned
+<br>
 - Run the `find_breadths.py` script following the format: 
 ```sh
 python3 find_breadths.py --slots <list-of-slots>
@@ -20,7 +24,7 @@ python3 find_breadths.py --slots <list-of-slots>
 - Optional flag(s):
   - `-o` or `--overwrite`: Overwrite the old `breadth_electives.csv` file
   - `--notp`: Don't use the `token.json` file to login, instead enter OTP manually (easier setup)
-  
+<br>
 - This will generate a file called `breadth_electives.csv` with all the breadth electives, along with `available_breadths.txt`, which will list the breadth electives available to you (based on your slots)
 
 
