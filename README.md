@@ -4,7 +4,8 @@ A simple script to find the depth and breadth electives available for you for su
 --- 
 
 ## Setup 
-- This script uses the [iit-kgp-erp-login](https://pypi.org/project/iitkgp-erp-login/) library created by [proffapt](https://github.com/proffapt), and as such, there is some pre-requisite setup to be done 
+- This script uses the [iit-kgp-erp-login](https://pypi.org/project/iitkgp-erp-login/) library created by [proffapt](https://github.com/proffapt), and as such, there is some pre-requisite setup to be done
+    - Copy the template for `erpcreds.py` by running `cp erpcreds.py.template erpcreds.py` in the terminal
     - Fill `erpcreds.py` with the relevant credentials
     - **If you want automatic OTP fetching**: Generate `token.json` file following the instructions [here](https://pypi.org/project/iitkgp-erp-login/#token)
 - Install dependencies by running 
