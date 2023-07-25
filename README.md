@@ -1,4 +1,5 @@
-A simple script to find the depth and breadth electives available for you
+# Get Your Freaking Electives :)
+A simple script to find the depth and breadth electives available for you for subject registration
 
 ---
 
