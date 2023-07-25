@@ -1,7 +1,7 @@
 # Get Your Freaking Electives :)
 A simple script to find the depth and breadth electives available for you for subject registration
 
----
+--- 
 
 ## Setup 
 - This script uses the [iit-kgp-erp-login](https://pypi.org/project/iitkgp-erp-login/) library created by [proffapt](https://github.com/proffapt), and as such, there is some pre-requisite setup to be done 
@@ -51,10 +51,10 @@ python3 find_breadths.py -o --notp --slots F4 G3
 ```sh
 python3 find_depths.py --dept <department-code> --year <year-of-study> --session <session> --semester <semester>
 ```
-- `--dept` is the 2-letter code of your department, eg: `CS`
-- `--year` is your year of study, eg: `3
-- `session` is in the format `YYYY-YYY`, eg: `2023-2024`
-- `semester` is either `AUTUMN` or `SPRING` 
+- `--dept` is the **2-letter code** of your department, eg: `CS`, `MA`, `IM`, etc.
+- `--year` is your year of study **(single digit)**, eg: `3`
+- `--session` is in the format `YYYY-YYY`, eg: `2023-2024`
+- `--semester` is either `AUTUMN` or `SPRING` 
 - Optional flag(s):
   - `--notp`: Don't use the `token.json` file to login, instead enter OTP manually (easier setup)
 
