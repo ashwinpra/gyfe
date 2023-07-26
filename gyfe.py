@@ -13,7 +13,7 @@ DEPT=erpcreds.ROLL_NUMBER[2:4]
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Get depth electives from ERP')
-    parser.add_argument('electives', type=str, help='Breadth/Depth')
+    parser.add_argument('electives', type=str, help='breadth/depth')
     parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
     parser.add_argument('--year', type=int, help='Year of study (single digit)', required=True)
     parser.add_argument('--session', type=str, default='2023-2024', help='Session (eg. 2023-2024)')
@@ -177,7 +177,6 @@ def save_depths(args):
 
     all_unavailable_slots = find_all_unavailable_slots(unavailable_slots)
     
-
     # get depth courses
     df_all = df_all[df_all['Course Code'].isin(df_depths['Course Code'])]
 
@@ -305,7 +304,6 @@ def save_breadths(args):
     all_unavailable_slots = find_all_unavailable_slots(unavailable_slots)
 
     #* remove courses with unavailable slots
-    # df = df[~df['Slot'].isin(all_unavailable_slots)]
     df = df[~df['Slot'].str.contains('|'.join(all_unavailable_slots), na=False)]
     df.set_index('Course Code', inplace=True)
 
