@@ -4,7 +4,8 @@ available_breadths.txt
 available_depths.txt
 res.txt
 *.csv
-*.json
+credentials.json
+token.json
 venv
 __pycache__
 .DS_Store

@@ -9,11 +9,12 @@ from tabulate import tabulate
 import re
 import json
 
+DEPT=erpcreds.ROLL_NUMBER[2:4]
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Get depth electives from ERP')
     parser.add_argument('electives', type=str, help='Breadth/Depth')
     parser.add_argument('--notp', action='store_true', help='Enter OTP manually')
-    parser.add_argument('--dept', type=str, help='Department code (2 letters)', required=True)
     parser.add_argument('--year', type=int, help='Year of study (single digit)', required=True)
     parser.add_argument('--session', type=str, default='2023-2024', help='Session (eg. 2023-2024)')
     parser.add_argument('--semester', type=str, default='AUTUMN', help='Semester (AUTUMN/SPRING)')
@@ -21,7 +22,7 @@ def parse_args():
 
 def find_core_courses(headers, session, args):
 
-    COURSES_URL = f"https://erp.iitkgp.ac.in/Acad/new_curr_subject/get_details.jsp?action=second&year=null&course={args.dept}&session1=2023-2024&type=UG"
+    COURSES_URL = f"https://erp.iitkgp.ac.in/Acad/new_curr_subject/get_details.jsp?action=second&year=null&course={DEPT}&session1=2023-2024&type=UG"
 
     #* Get code of core courses
 
@@ -111,8 +112,8 @@ def save_depths(args):
     else:
         erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
 
-    TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={args.dept}&session={args.session}&index={args.year}&semester={args.semester}&dept={args.dept}"
-    SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={args.dept}"
+    TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={DEPT}&session={args.session}&index={args.year}&semester={args.semester}&dept={DEPT}"
+    SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={DEPT}"
 
 
     #*First get list of depths
@@ -216,9 +217,7 @@ def save_breadths(args):
     
 
     ERP_ELECTIVES_URL = "https://erp.iitkgp.ac.in/Acad/central_breadth_tt.jsp"
-    TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={args.dept}&session={args.session}&index={args.year}&semester={args.semester}&dept={args.dept}"
-    SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={args.dept}"
-    COURSES_URL = f"https://erp.iitkgp.ac.in/Acad/new_curr_subject/get_details.jsp?action=second&year=null&course={args.dept}&session1=2023-2024&type=UG"
+    SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={DEPT}"
 
     response = session.get(ERP_ELECTIVES_URL, headers=headers)
 
@@ -305,13 +304,11 @@ def save_breadths(args):
 
     all_unavailable_slots = find_all_unavailable_slots(unavailable_slots)
 
-    print(all_unavailable_slots)
-
     #* remove courses with unavailable slots
     # df = df[~df['Slot'].isin(all_unavailable_slots)]
     df = df[~df['Slot'].str.contains('|'.join(all_unavailable_slots), na=False)]
+    df.set_index('Course Code', inplace=True)
 
-        
     # save available electives
     with open('available_breadths.txt', 'w') as f:
         f.write(tabulate(df, headers='keys', tablefmt='fancy_grid'))
