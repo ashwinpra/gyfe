@@ -23,7 +23,7 @@ python3 gyfe.py <breadth/depth> --year <year-of-study> --session <session> --sem
 - `--session` is in the format `YYYY-YYY`, eg: `2023-2024`
 - `--semester` is either `AUTUMN` or `SPRING` 
 > **Note**
-> - `--session` has a default value of `2023-2024`, and `--semester`` has a default value of `SPRING`
+> - `--session` has a default value of `2023-2024`, and `--semester` has a default value of `SPRING`
 > - This must be changed every semester
 - Optional flag(s):
   - `--notp`: Don't use the `token.json` file to login, instead enter OTP manually (easier setup)
