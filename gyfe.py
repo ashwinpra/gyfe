@@ -31,27 +31,28 @@ def find_core_courses(headers, session, args):
     soup = bs(response.text, 'html.parser')
     course_table = soup.find('table', {'id': 'disptab'})
 
-    # the core courses can be found between the tr with semester name as title, and tr with text "LIST OF ELECTIVES" - not sure whether this will work in all cases
-
     for sem_tr in course_table.find_all('tr', bgcolor='#8EEBEC'):
         semester_number = sem_tr.find('font', color='blue').b.text.strip().split('-')[-1].strip()
         if semester_number == str(semester):
             start_tr = sem_tr.find_next_sibling('tr')
             break
 
-    end_tr = soup.find('tr', bgcolor="white", string="LIST OF ELECTIVES")
-
     # Extract all course codes from the semester section
     core_course_codes = []
     curr_tr = start_tr
-    while curr_tr != end_tr:
+    while 1:
+        # stop when you find tr that contains a td with colspan=5 and align=center -> this means start of next section
+        if curr_tr.find('td', {'colspan': '5', 'align': 'center'}):
+            break
+
         course_code = curr_tr.find('td', {'width': '5%', 'title': ' '}).text.strip()
 
         core_course_codes.append(course_code)
 
         curr_tr = curr_tr.find_next_sibling('tr')
     return core_course_codes
-    
+
+
 def find_all_unavailable_slots(unavailable_slots):
     all_unavailable_slots = []
 
@@ -108,9 +109,9 @@ def save_depths(args):
     session = requests.Session()
 
     if args.notp:
-        erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
+        _, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
     else:
-        erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
+       _, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
 
     TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={DEPT}&session={args.session}&index={args.year}&semester={args.semester}&dept={DEPT}"
     SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={DEPT}"
@@ -210,9 +211,9 @@ def save_breadths(args):
     session = requests.Session()
 
     if args.notp:
-        erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
+        _, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, LOGGING=True, SESSION_STORAGE_FILE=".session")
     else:
-        erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
+        _, ssoToken = erp.login(headers, session, ERPCREDS=erpcreds, OTP_CHECK_INTERVAL=2, LOGGING=True, SESSION_STORAGE_FILE=".session")
     
 
     ERP_ELECTIVES_URL = "https://erp.iitkgp.ac.in/Acad/central_breadth_tt.jsp"
