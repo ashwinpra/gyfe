@@ -22,7 +22,7 @@ def parse_args():
 
 def find_core_courses(headers, session, args):
 
-    COURSES_URL = f"https://erp.iitkgp.ac.in/Acad/new_curr_subject/get_details.jsp?action=second&year=null&course={DEPT}&session1=2023-2024&type=UG"
+    COURSES_URL = f"https://erp.iitkgp.ac.in/Acad/new_curr_subject/get_details.jsp?action=second&year=null&course={DEPT}&session1={args.session}&type=UG"
 
     #* Get code of core courses
 
@@ -71,8 +71,7 @@ def find_all_unavailable_slots(unavailable_slots):
     for slot in unavailable_slots:
         if len(slot) == 1: 
             # it is a lab slot; check for overlap from overlaps.json
-            for new_slot in overlaps[slot].split(","):
-                all_unavailable_slots.append(new_slot)
+            all_unavailable_slots.extend(overlaps[slot])
             all_unavailable_slots.append(slot)
 
         # else, if there is F3 slot for example, add F2, F4 to unavailable slots, and vice versa similarly for whatever letters are there
@@ -83,7 +82,7 @@ def find_all_unavailable_slots(unavailable_slots):
 
             # check if there are any lab slots overlapping with it 
             for parent, slots in overlaps.items():
-                if slot in slots.split(','):
+                if slot in slots:
                     all_unavailable_slots.append(parent)
 
     # remove duplicates if any
@@ -115,7 +114,6 @@ def save_depths(args):
 
     TIMETABLE_URL = f"https://erp.iitkgp.ac.in/Acad/view/dept_final_timetable.jsp?action=second&course={DEPT}&session={args.session}&index={args.year}&semester={args.semester}&dept={DEPT}"
     SUBJ_LIST_URL = f"https://erp.iitkgp.ac.in/Acad/timetable_track.jsp?action=second&dept={DEPT}"
-
 
     #*First get list of depths
     response = session.get(TIMETABLE_URL, headers=headers)
